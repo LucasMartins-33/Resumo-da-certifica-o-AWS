@@ -61,18 +61,18 @@ Empresas acumulam petabytes de dados em manuais, laudos, contratos, planilhas e 
 ```mermaid
 flowchart LR
     subgraph Raw ["1. Dados Brutos"]
-        DOC["Documentos (PDF, TXT)"]
-        MEDIA["Áudio / Vídeo / Imagens"]
+        DOC["Documentos PDF ou TXT"]
+        MEDIA["Áudio, Vídeo e Imagens"]
     end
 
-    subgraph Vectorization ["2. Modelo de Embedding (ML)"]
-        TOK["Tokenização\n(Quebra em pedaços e IDs)"]
-        VEC["Vetorização Numérica\n(Espaço n-dimensional)"]
+    subgraph Vectorization ["2. Modelo de Embedding ML"]
+        TOK["Tokenização<br/>Quebra em IDs"]
+        VEC["Vetorização Numérica<br/>Espaço n-dimensional"]
         TOK --> VEC
     end
 
     subgraph Storage ["3. Vector Database"]
-        VDB[("Banco Vetorial\n(Vetores + Metadados)")]
+        VDB["Banco Vetorial<br/>Vetores e Metadados"]
     end
 
     DOC --> TOK
@@ -123,12 +123,12 @@ Com o RAG implementado, o fluxo de atendimento da AnyCompany evolui da seguinte 
 
 ```mermaid
 flowchart TD
-    User["Cliente com Dúvida / Problema"] -->|"1. Pergunta em Linguagem Natural"| CB["Chatbot AnyCompany\n(Foundation Model / LLM)"]
-    CB -->|"2. Consulta Semântica (Prompt)"| DB[("Enterprise Data\n(Base Vetorial com Manuais,\nPlanos e FAQs)") ]
-    DB -->|"3. Retorna Contexto Exato dos Planos"| CB
-    CB -->|"4. Executa Ação / Responde com Contexto"| PLAN["Modifica Plano 5G / Internet"]
+    User["Cliente com Dúvida ou Problema"] -->|"1. Pergunta do Cliente"| CB["Chatbot AnyCompany - LLM"]
+    CB -->|"2. Consulta Semântica"| DB["Enterprise Data - Base Vetorial"]
+    DB -->|"3. Retorna Contexto Relevante"| CB
+    CB -->|"4. Modifica Parametros do Plano"| PLAN["Sistema de Planos e Faturamento"]
     CB -->|"5. Resposta Precisa e Factual"| User
-    User -->|"6. Avaliação da Resposta (+ / -)"| RATING["Feedback de Satisfação"]
+    User -->|"6. Avaliação Positiva ou Negativa"| RATING["Feedback de Satisfação"]
 ```
 
 ---
@@ -153,16 +153,16 @@ flowchart LR
     User["Cliente"] <-->|"Interage"| CB["Chatbot AnyCompany"]
 
     subgraph Agentes ["Ecossistema de Agentes Especializados"]
-        A1["Agente 1: Execução de Planos\n(Altera franquia 5G, faz upgrade\ne ativa serviços no backend)"]
-        A2["Agente 2: Curadoria de Dados\n(Captura diálogos reais, limpa,\nanonimiza e injeta na base vetorial)"]
-        A3["Agente 3: Pesquisa de Satisfação\n(Detecta encerramento da conversa\ne dispara pesquisa CSAT >= 4/5)"]
+        A1["Agente 1: Execução de Planos<br/>Altera franquia 5G e ativa serviços"]
+        A2["Agente 2: Curadoria de Dados<br/>Atualiza base vetorial com diálogos"]
+        A3["Agente 3: Pesquisa de Satisfação<br/>Envia pesquisa CSAT maior ou igual a 4/5"]
     end
 
     CB -->|"Comandos de Ação"| A1
-    A1 -->|"Atualiza"| SYS["Sistemas de Planos & Faturamento"]
+    A1 -->|"Atualiza"| SYS["Sistemas de Planos e Faturamento"]
 
     CB -->|"Histórico do Chat"| A2
-    A2 -->|"Atualiza Base RAG"| VDB[("Enterprise Data")]
+    A2 -->|"Atualiza Base RAG"| VDB["Enterprise Data - Base Vetorial"]
     VDB -.->|"Melhora respostas futuras"| CB
 
     CB -->|"Evento de Término"| A3
@@ -215,15 +215,15 @@ Para evitar os altos custos da avaliação humana contínua, utiliza-se a arquit
 
 ```mermaid
 flowchart TD
-    Q["1. Lista de Perguntas"] --> MT["Modelo em Avaliação\n(Chatbot RAG)"]
-    Q --> BD["2. Benchmark Dataset\n(Contexto + Respostas dos SMEs)"]
+    Q["1. Lista de Perguntas"] --> MT["Modelo em Avaliação - Chatbot RAG"]
+    Q --> BD["2. Benchmark Dataset - Respostas dos SMEs"]
     
-    MT --> GA["3. Respostas Geradas\n(Generated Answers)"]
+    MT --> GA["3. Respostas Geradas"]
     
-    GA --> JM["4. Juiz Externo (Judge Model)\n(Compara Resposta Gerada vs. Gabarito do SME)"]
+    GA --> JM["4. Juiz Externo - Judge Model"]
     BD --> JM
     
-    JM --> SCORE["5. Nota de Avaliação (Grading Score)\n• Acurácia (Correção factual)\n• Relevância (Pertinência à pergunta)\n• Comprehensiveness (Profundidade e clareza)"]
+    JM --> SCORE["5. Nota de Avaliação - Grading Score<br/>Acurácia, Relevância e Completude"]
 ```
 
 #### As 3 Dimensões do Grading Score:
@@ -252,7 +252,7 @@ O segundo caso do módulo demonstra como o **Fine-Tuning** e as **métricas de N
 ```mermaid
 flowchart TD
     subgraph Ingestao ["1. Ingestão de Dados do Usuário"]
-        IN["Dados de Comportamento:\n• Clickstream data (cliques e navegação)\n• Cart data (itens adicionados ao carrinho)\n• Purchased items (histórico de compras)\n• Customer feedback (avaliações e estrelas)"]
+        IN["Dados de Comportamento:<br/>Cliques, Carrinho, Compras e Avaliações"]
     end
 
     subgraph Modelo ["2. Geração Generativa"]
@@ -262,15 +262,15 @@ flowchart TD
     end
 
     subgraph Metricas ["3. Validação das Métricas Técnicas"]
-        OUT1 --> M1["ROUGE (Mede Completude e Factualidade)"]
-        M1 --> M2["BLEU (Mede Precisão e Termos Técnicos)"]
-        OUT2 --> M3["BERTScore (Mede Relevância Semântica Pessoal)"]
+        OUT1 --> M1["ROUGE - Mede Completude e Factualidade"]
+        M1 --> M2["BLEU - Mede Precisão e Termos Técnicos"]
+        OUT2 --> M3["BERTScore - Mede Relevância Semântica"]
     end
 
     subgraph Usuario ["4. Entrega e Ciclo Contínuo"]
         M2 --> CLI["Cliente Final"]
         M3 --> CLI
-        CLI -->|"Feedback Loop (Novas compras e likes)"| IN
+        CLI -->|"Feedback Loop - Novas compras e likes"| IN
     end
 ```
 
@@ -317,16 +317,16 @@ Fine-tuning é o processo de pegar um modelo pré-treinado e **continuar o trein
 flowchart TD
     subgraph Fase1 ["Fase 1: Coleta de Preferências Humanas"]
         P1["Vários Prompts"] --> LLM1["LLM Base"]
-        LLM1 --> C1["Múltiplas Respostas (Completions)"]
-        C1 --> HE["Avaliadores Humanos dão notas:\n• Resposta é relevante?\n• Há toxicidade?\n• É prestativa?"]
-        HE --> RM["Treina o Modelo de Recompensa (Reward Model)"]
+        LLM1 --> C1["Múltiplas Respostas"]
+        C1 --> HE["Avaliadores Humanos dão notas:<br/>Relevância, Toxicidade e Utilidade"]
+        HE --> RM["Treina o Modelo de Recompensa - Reward Model"]
     end
 
     subgraph Fase2 ["Fase 2: Otimização por Reforço"]
         P2["Novo Prompt"] --> LLM2["LLM em Ajuste"]
         LLM2 --> RES["Resposta Gerada"]
-        RES --> RM2["Reward Model (Calcula Score de Recompensa)"]
-        RM2 --> RLA["Algoritmo RL (ex: PPO)"]
+        RES --> RM2["Reward Model calcula Score de Recompensa"]
+        RM2 --> RLA["Algoritmo RL - ex: PPO"]
         RLA -->|"Atualiza pesos matemáticos"| LLM2
     end
 ```
