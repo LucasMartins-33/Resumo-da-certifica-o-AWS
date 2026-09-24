@@ -233,6 +233,34 @@ flowchart TD
 
 ---
 
+### 4.4 Abordagem Combinada (Combined Approach) no Caso AnyCompany Telecom
+
+Na prática, a estratégia mais eficaz para avaliar modelos de linguagem generativos consiste em **combinar tanto datasets de benchmark quanto a avaliação humana**, garantindo uma visão holística e profunda da performance:
+
+* **Por que combinar ambas?** 
+  * Enquanto os **benchmark datasets** quantificam com rigor as capacidades técnicas objetivas do modelo (acurácia, velocidade, robustez), a **avaliação humana** traz a perspectiva humanocêntrica indispensável (empatia, engajamento, nuances e adequação ao contexto real) que os benchmarks matemáticos são incapazes de capturar isoladamente.
+  * Esse modelo híbrido garante que o sistema de IA não seja apenas tecnicamente proficiente, mas também verdadeiramente resolutivo e agradável para os usuários reais.
+
+```mermaid
+flowchart LR
+    subgraph PreDeploy ["Fase 1: Pré-Deploy (Antes da Produção)"]
+        BM["Benchmark Datasets\n(Perguntas e Respostas dos SMEs)"] --> TEST["Testes Técnicos Automatizados\n(Mede Acurácia, Velocidade e RAG)"]
+        TEST --> HOMOL{"Aprovado nos\nCritérios Técnicos?"}
+    end
+
+    subgraph PosDeploy ["Fase 2: Pós-Deploy (Em Produção)"]
+        HOMOL -->|"Sim: Publicação"| PROD["Modelo Atendendo Clientes Reais"]
+        PROD --> HUM["Usuário Humano Interage e Avalia a Resposta\n(Rate the Output: Positivo / Negativo)"]
+        HUM -->|"Feedback Contínuo"| LEARN["Melhoria Contínua da Acurácia\nem Função do Tempo"]
+    end
+```
+
+#### Aplicação Direta no Caso da AnyCompany Telecom:
+* **Antes de colocar o chatbot em produção:** A empresa avalia o desempenho técnico das respostas do modelo contra os **datasets de benchmark** criados pelos especialistas, validando se o RAG consulta a base corporativa corretamente.
+* **Após a implantação em produção:** Um **cliente humano real interage diretamente com o chatbot e avalia a interação** (mecanismo de feedback positivo/negativo e pesquisa de satisfação). Essa telemetria permite que o sistema identifique falhas e aprimore sua precisão e qualidade **em função do tempo**.
+
+---
+
 ## 5. Estudo de Caso 2: AnyCompany Fashion Retailer (E-commerce de Moda)
 
 O segundo caso do módulo demonstra como o **Fine-Tuning** e as **métricas de NLP** aumentam o faturamento de uma loja online de roupas e calçados.
